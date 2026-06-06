@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Elijah.madethis | Photography — Book a Shoot</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    :root {
+      --bg: #0b0b0b;
+      --card: #1a1a1a;
+      --muted: #aaa;
+      --accent: #fff;
+      --radius: 12px;
+      font-family: Arial, sans-serif;
+    }
+    html,body { height:100%; margin:0; background:var(--bg); color:var(--accent); }
+    header { padding:60px 20px; text-align:center; background:#111; }
+    h1 { margin:0; font-size:40px; }
+    .tagline { color:var(--muted); margin-top:8px; }
+    .container { max-width:920px; margin:28px auto; padding:20px; }
+    .card { background:var(--card); padding:20px; border-radius:var(--radius); margin-bottom:18px; }
+    label { display:block; margin-top:12px; font-weight:600; }
+    .hint { color:var(--muted); font-size:13px; margin-top:6px; }
+    input[type="text"], input[type="email"], input[type="tel"], input[type="date"], input[type="time"],
+    input[type="number"], textarea, select {
+      width:100%; padding:10px; margin-top:8px; border-radius:8px; border:none; outline:none;
+      background:#0f0f0f; color:var(--accent);
+    }
+    textarea { resize:vertical; min-height:100px; }
+    .row { display:flex; gap:12px; }
+    .row > * { flex:1; }
+    fieldset { border:1px solid #222; padding:12px; border-radius:8px; margin-top:12px; }
+    legend { padding:0 8px; font-weight:700; }
+    .inline { display:flex; gap:10px; align-items:center; margin-top:8px; flex-wrap:wrap;}
+    .inline label { font-weight:400; margin:0; }
+    .btn { width:100%; padding:12px; background:var(--accent); color:#000; border:none; border-radius:8px; font-weight:700; cursor:pointer; margin-top:12px; }
+    .small { font-size:13px; color:var(--muted); margin-top:8px; }
+    footer { text-align:center; color:#666; padding:18px; font-size:12px; }
+    @media (max-width:640px) { .row { flex-direction:column; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Elijah.madethis</h1>
+    <div class="tagline">Photography • Visual Storytelling • NYC</div>
+  </header>
+
+  <main class="container">
+    <section class="card" aria-labelledby="booking-heading">
+      <h2 id="booking-heading">📸 Book a Shoot</h2>
+      <p class="hint">Fill this out and I’ll get back to you ASAP. Replace YOUR-EMAIL-HERE in the form action with your email or FormSubmit endpoint.</p>
+
+      <!-- formsubmit.co endpoint: replace YOUR-EMAIL-HERE -->
+      <form id="bookingForm" action="https://formsubmit.co/YOUR-EMAIL-HERE" method="POST" novalidate>
+        <!-- convenience hidden fields for formsubmit -->
+        <input type="hidden" name="_subject" value="New booking request from website">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_next" value="https://elijah.madethis/thank-you.html">
+
+        <label for="name">What is your name? *</label>
+        <input id="name" name="name" type="text" placeholder="Full name" required>
+
+        <div class="row">
+          <div>
+            <label for="email">Email address *</label>
+            <input id="email" name="email" type="email" placeholder="you@example.com" required>
+          </div>
+          <div>
+            <label for="phone">What is your phone number?</label>
+            <input id="phone" name="phone" type="tel" placeholder="(555) 555-5555">
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label for="age">What is your age? *</label>
+            <input id="age" name="age" type="number" min="0" placeholder="e.g. 28" required>
+          </div>
+
+          <div>
+            <label for="shoot_type">Type of Shoot *</label>
+            <select id="shoot_type" name="shoot_type" required>
+              <option value="">Select a type</option>
+              <option value="Portrait">Portrait</option>
+              <option value="Event">Event</option>
+              <option value="Lifestyle">Lifestyle</option>
+              <option value="Graduation">Graduation</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label for="shoot_date">On what date would you like your photo shoot? *</label>
+            <input id="shoot_date" name="shoot_date" type="date" required>
+          </div>
+          <div>
+            <label for="shoot_time">What time would you like to schedule your photo shoot? *</label>
+            <input id="shoot_time" name="shoot_time" type="time" required>
+          </div>
+        </div>
+
+        <label for="duration">What is the duration of your photo shoot? *</label>
+        <select id="duration" name="duration" required onchange="handleDurationChange()">
+          <option value="">Select duration</option>
+          <option value="Less than 1 hour">Less than 1 hour</option>
+          <option value="1 hour">1 hour</option>
+          <option value="2 hours">2 hours</option>
+          <option value="3 hours">3 hours</option>
+          <option value="4 hours">4 hours</option>
+          <option value="Other">Other</option>
+        </select>
+        <input id="duration_other" name="duration_other" type="text" placeholder="Please specify (e.g. 90 minutes)" style="display:none; margin-top:10px;">
+
+        <label for="location">Where will your photo shoot be located? (City, State) *</label>
+        <input id="location" name="location" type="text" placeholder="New York, NY" required>
+
+        <fieldset>
+          <legend>Travel & fees</legend>
+          <div class="inline">
+            <input id="travel_fee" name="travel_fee_ack" type="checkbox" required>
+            <label for="travel_fee">I understand that certain locations may incur a travel fee, to be added to the total cost of photography services. *</label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Location type</legend>
+          <div class="inline" role="radiogroup" aria-label="Will your shoot be indoors or outdoors?">
+            <label><input type="radio" name="indoors_outdoors" value="Indoors" required> Indoors</label>
+            <label><input type="radio" name="indoors_outdoors" value="Outdoors"> Outdoors</label>
+            <label><input type="radio" name="indoors_outdoors" value="Both"> Both</label>
+          </div>
+        </fieldset>
+
+        <label for="backdrop">Which Backdrop would you like to use (if needed) *</label>
+        <select id="backdrop" name="backdrop" required>
+          <option value="">Choose a backdrop</option>
+          <option value="Decorated">Decorated backdrop (price depends on design)</option>
+          <option value="Plain White">Plain White</option>
+          <option value="Plain Black">Plain Black</option>
+          <option value="No backdrop">No backdrop</option>
+        </select>
+
+        <label for="purpose">What is the purpose of the photo shoot? (graduation, birthday, party, etc) *</label>
+        <textarea id="purpose" name="purpose" placeholder="Tell me the reason and any ideas" required></textarea>
+
+        <fieldset>
+          <legend>Deposit</legend>
+          <div class="inline">
+            <input id="deposit_agree" name="deposit_agree" type="checkbox" required>
+            <label for="deposit_agree">I agree to submit the required, non-refundable deposit of $20.00. *</label>
+          </div>
+
+          <label class="small">How would you like to pay your deposit? *</label>
+          <div class="inline">
+            <label><input type="radio" name="deposit_method" value="Cash App" required> Cash App</label>
+            <label><input type="radio" name="deposit_method" value="Zelle"> Zelle</label>
+            <label><input type="radio" name="deposit_method" value="Venmo"> Venmo</label>
+          </div>
+
+          <label for="payment_details">Payment handle / transaction ID (Enter CashApp $Cashtag or Venmo/Zelle info and transaction ID) *</label>
+          <input id="payment_details" name="payment_details" type="text" placeholder="e.g. $YourCashTag or Zelle tx id" required>
+          <p class="small">Note: This form records your chosen payment method and transaction details. You must send the $20 deposit separately to the payment handle you choose. If you want automated payments, contact to set up an online payment link.</p>
+        </fieldset>
+
+        <fieldset>
+          <legend>Delivery & prints</legend>
+          <label class="small">How would you like to receive your photos? *</label>
+          <div class="inline">
+            <label><input type="radio" name="delivery_method" value="Email" required> Email (no additional cost)</label>
+            <label><input type="radio" name="delivery_method" value="Flash Drive"> Flash Drive (+$55)</label>
+            <label><input type="radio" name="delivery_method" value="Printed Photos"> Printed Photos (+$65)</label>
+            <label><input type="radio" name="delivery_method" value="Picture Book"> Picture Book (+$75)</label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Permissions</legend>
+          <label class="small">Do I have permission to post your photos on my social media platforms? *</label>
+          <div class="inline">
+            <label><input type="radio" name="post_permission" value="Yes" required> Yes</label>
+            <label><input type="radio" name="post_permission" value="No"> No</label>
+          </div>
+        </fieldset>
+
+        <label for="additional">Anything else you'd like me to know?</label>
+        <textarea id="additional" name="additional" placeholder="Accessibility needs, wardrobe notes, etc."></textarea>
+
+        <button type="submit" class="btn">Send Booking Request</button>
+      </form>
+
+      <p class="small">Pricing: Basic Shoot — $75+ · Full Session — $150+ · Events — Custom pricing</p>
+      <p class="small">Payment methods accepted: Cash App · Zelle · Venmo</p>
+    </section>
+
+    <section class="card">
+      <h2>📷 Portfolio</h2>
+      <a class="btn" href="https://instagram.com/YOUR_INSTAGRAM" style="display:inline-block; text-decoration:none; text-align:center;">View Instagram</a>
+    </section>
+
+    <section class="card">
+      <h2>💳 Payment</h2>
+      <p class="small">Deposits are non-refundable and secure your date. Final payment is due before or at the session. If you need an invoice or online payment link, request one in your message above.</p>
+    </section>
+  </main>
+
+  <footer>
+    © Elijah.madethis — Photography. All rights reserved.
+  </footer>
+
+  <script>
+    function handleDurationChange() {
+      var sel = document.getElementById('duration');
+      var other = document.getElementById('duration_other');
+      if (sel.value === 'Other') other.style.display = 'block';
+      else { other.style.display = 'none'; other.value = ''; }
+    }
+
+    // Optional: basic client-side validation reminder for deposit checkbox + payment info
+    document.getElementById('bookingForm').addEventListener('submit', function(e){
+      var deposit = document.getElementById('deposit_agree');
+      var paymentDetails = document.getElementById('payment_details');
+      if (!deposit.checked) {
+        e.preventDefault();
+        alert('Please agree to the non-refundable deposit to proceed.');
+        deposit.focus();
+        return;
+      }
+      if (!paymentDetails.value.trim()) {
+        e.preventDefault();
+        alert('Please enter a payment handle or transaction ID for the deposit.');
+        paymentDetails.focus();
+        return;
+      }
+      // allow submit — formsubmit.co will email you the form contents
+    });
+  </script>
+</body>
+</html>
