@@ -37,6 +37,15 @@
     .small { font-size:13px; color:var(--muted); margin-top:8px; }
     footer { text-align:center; color:#666; padding:18px; font-size:12px; }
     @media (max-width:640px) { .row { flex-direction:column; } }
+
+    /* modal styles */
+    .modal-backdrop { position:fixed; inset:0; background:rgba(0,0,0,0.6); display:none; align-items:center; justify-content:center; z-index:50; }
+    .modal { background:#0f0f0f; border:1px solid #222; padding:18px; border-radius:10px; width:320px; max-width:90%; color:#fff; }
+    .modal h3 { margin-top:0; }
+    .method { display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #151515; }
+    .method:last-child { border-bottom:none; }
+    .copy-btn { background:#222; color:#fff; border:none; padding:6px 8px; border-radius:6px; cursor:pointer; }
+    .close-btn { background:#fff; color:#000; border:none; padding:8px 10px; border-radius:8px; cursor:pointer; margin-top:12px; width:100%; }
   </style>
 </head>
 <body>
@@ -149,7 +158,7 @@
           <legend>Deposit</legend>
           <div class="inline">
             <input id="deposit_agree" name="deposit_agree" type="checkbox" required>
-            <label for="deposit_agree">I agree to submit the required, non-refundable deposit of $20.00. *</label>
+            <label for="deposit_agree">I agree to submit the required, non-refundable deposit of $100.00. *</label>
           </div>
 
           <label class="small">How would you like to pay your deposit? *</label>
@@ -160,9 +169,13 @@
             <label><input type="radio" name="deposit_method" value="Zelle"> Zelle</label>
           </div>
 
+          <div style="margin-top:8px;">
+            <button type="button" class="btn" id="openPay">Pay $100 deposit</button>
+          </div>
+
           <label for="payment_details">Payment handle / transaction ID (Enter Apple Pay/Chime/CashApp/Zelle info and transaction ID) *</label>
-          <input id="payment_details" name="payment_details" type="text" placeholder="e.g. $YourCashTag or Zelle tx id" required>
-          <p class="small">Note: This form records your chosen payment method and transaction details. You must send the $20 deposit separately to the payment handle you choose. If you want automated payments, provide a payment link and I can add a Pay button.</p>
+          <input id="payment_details" name="payment_details" type="text" placeholder="e.g. confirmation number or $YourCashTag" required>
+          <p class="small">Note: This form records your chosen payment method and transaction details. Use the Pay button above for instructions on how to pay. Once you've paid, paste the transaction confirmation here.</p>
         </fieldset>
 
         <fieldset>
@@ -210,6 +223,48 @@
     © Elijah.madethis — Photography. All rights reserved.
   </footer>
 
+  <!-- Pay modal -->
+  <div id="modalBackdrop" class="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal" role="document">
+      <h3>How to pay the $100 deposit</h3>
+      <p class="small">I accept these methods. Tap Copy to copy a sample message you can send to the chosen app. After paying, paste the transaction ID into the booking form's Payment field.</p>
+
+      <div class="method">
+        <div>
+          <strong>Apple Pay</strong>
+          <div class="small">Use your device's Apple Pay to send $100 to the business card or handle you have saved.</div>
+        </div>
+        <button class="copy-btn" data-copy="Apple Pay - Paid $100">Copy</button>
+      </div>
+
+      <div class="method">
+        <div>
+          <strong>Chime</strong>
+          <div class="small">Send $100 via Chime using the recipient's username or phone number.</div>
+        </div>
+        <button class="copy-btn" data-copy="Chime - Paid $100">Copy</button>
+      </div>
+
+      <div class="method">
+        <div>
+          <strong>Cash App</strong>
+          <div class="small">Send $100 to the Cash App $Cashtag (enter the $Cashtag in Payment field).</div>
+        </div>
+        <button class="copy-btn" data-copy="Cash App - Paid $100. Cashtag: $YourCashTag">Copy</button>
+      </div>
+
+      <div class="method">
+        <div>
+          <strong>Zelle</strong>
+          <div class="small">Send $100 via Zelle to the recipient email or phone number. Paste the confirmation/tx id into the form.</div>
+        </div>
+        <button class="copy-btn" data-copy="Zelle - Paid $100. Recipient: you@example.com">Copy</button>
+      </div>
+
+      <button class="close-btn" id="closeModal">Close</button>
+    </div>
+  </div>
+
   <script>
     function handleDurationChange() {
       var sel = document.getElementById('duration');
@@ -217,6 +272,27 @@
       if (sel.value === 'Other') other.style.display = 'block';
       else { other.style.display = 'none'; other.value = ''; }
     }
+
+    // Modal behaviour
+    var openPay = document.getElementById('openPay');
+    var backdrop = document.getElementById('modalBackdrop');
+    var closeModal = document.getElementById('closeModal');
+    openPay.addEventListener('click', function(){ backdrop.style.display = 'flex'; backdrop.setAttribute('aria-hidden','false'); });
+    closeModal.addEventListener('click', function(){ backdrop.style.display = 'none'; backdrop.setAttribute('aria-hidden','true'); });
+    backdrop.addEventListener('click', function(e){ if(e.target === backdrop){ backdrop.style.display='none'; backdrop.setAttribute('aria-hidden','true'); } });
+
+    // copy buttons
+    document.querySelectorAll('.copy-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var text = btn.getAttribute('data-copy');
+        navigator.clipboard && navigator.clipboard.writeText(text).then(function(){
+          btn.textContent = 'Copied';
+          setTimeout(function(){ btn.textContent = 'Copy'; }, 1500);
+        }, function(){
+          alert('Copy not supported; please manually copy: ' + text);
+        });
+      });
+    });
 
     // Optional: basic client-side validation reminder for deposit checkbox + payment info
     document.getElementById('bookingForm').addEventListener('submit', function(e){
