@@ -48,14 +48,14 @@
   <main class="container">
     <section class="card" aria-labelledby="booking-heading">
       <h2 id="booking-heading">📸 Book a Shoot</h2>
-      <p class="hint">Fill this out and I’ll get back to you ASAP. Replace YOUR-EMAIL-HERE in the form action with your email or FormSubmit endpoint.</p>
+      <p class="hint">Fill this out and I’ll get back to you ASAP. Your contact email is set to NotJeremiah72@gmail.com.</p>
 
-      <!-- formsubmit.co endpoint: replace YOUR-EMAIL-HERE -->
-      <form id="bookingForm" action="https://formsubmit.co/YOUR-EMAIL-HERE" method="POST" novalidate>
+      <!-- formsubmit.co endpoint: NotJeremiah72@gmail.com -->
+      <form id="bookingForm" action="https://formsubmit.co/NotJeremiah72@gmail.com" method="POST" novalidate>
         <!-- convenience hidden fields for formsubmit -->
         <input type="hidden" name="_subject" value="New booking request from website">
         <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="_next" value="https://elijah.madethis/thank-you.html">
+        <input type="hidden" name="_next" value="/thank-you.html">
 
         <label for="name">What is your name? *</label>
         <input id="name" name="name" type="text" placeholder="Full name" required>
@@ -154,14 +154,15 @@
 
           <label class="small">How would you like to pay your deposit? *</label>
           <div class="inline">
-            <label><input type="radio" name="deposit_method" value="Cash App" required> Cash App</label>
+            <label><input type="radio" name="deposit_method" value="Apple Pay" required> Apple Pay</label>
+            <label><input type="radio" name="deposit_method" value="Chime"> Chime</label>
+            <label><input type="radio" name="deposit_method" value="Cash App"> Cash App</label>
             <label><input type="radio" name="deposit_method" value="Zelle"> Zelle</label>
-            <label><input type="radio" name="deposit_method" value="Venmo"> Venmo</label>
           </div>
 
-          <label for="payment_details">Payment handle / transaction ID (Enter CashApp $Cashtag or Venmo/Zelle info and transaction ID) *</label>
+          <label for="payment_details">Payment handle / transaction ID (Enter Apple Pay/Chime/CashApp/Zelle info and transaction ID) *</label>
           <input id="payment_details" name="payment_details" type="text" placeholder="e.g. $YourCashTag or Zelle tx id" required>
-          <p class="small">Note: This form records your chosen payment method and transaction details. You must send the $20 deposit separately to the payment handle you choose. If you want automated payments, contact to set up an online payment link.</p>
+          <p class="small">Note: This form records your chosen payment method and transaction details. You must send the $20 deposit separately to the payment handle you choose. If you want automated payments, provide a payment link and I can add a Pay button.</p>
         </fieldset>
 
         <fieldset>
@@ -190,13 +191,13 @@
         <button type="submit" class="btn">Send Booking Request</button>
       </form>
 
-      <p class="small">Pricing: Basic Shoot — $75+ · Full Session — $150+ · Events — Custom pricing</p>
-      <p class="small">Payment methods accepted: Cash App · Zelle · Venmo</p>
+      <p class="small">Pricing: Basic Shoot — $100+ · Full Session — $150+ · Events — Custom pricing</p>
+      <p class="small">Payment methods accepted: Apple Pay · Chime · Cash App · Zelle</p>
     </section>
 
     <section class="card">
       <h2>📷 Portfolio</h2>
-      <a class="btn" href="https://instagram.com/YOUR_INSTAGRAM" style="display:inline-block; text-decoration:none; text-align:center;">View Instagram</a>
+      <a class="btn" href="https://instagram.com/elijah.madethis" style="display:inline-block; text-decoration:none; text-align:center;">View Instagram</a>
     </section>
 
     <section class="card">
